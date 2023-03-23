@@ -8,7 +8,15 @@ defmodule ReminderApp.Application do
   @impl true
   def start(_type, _args) do
     children = [
-      # Starts a worker by calling: ReminderApp.Worker.start_link(arg)
+      # Start the Telemetry supervisor
+      ReminderAppWeb.Telemetry,
+      # Start the Ecto repository
+      ReminderApp.Repo,
+      # Start the PubSub system
+      {Phoenix.PubSub, name: ReminderApp.PubSub},
+      # Start the Endpoint (http/https)
+      ReminderAppWeb.Endpoint
+      # Start a worker by calling: ReminderApp.Worker.start_link(arg)
       # {ReminderApp.Worker, arg}
     ]
 
@@ -16,5 +24,13 @@ defmodule ReminderApp.Application do
     # for other strategies and supported options
     opts = [strategy: :one_for_one, name: ReminderApp.Supervisor]
     Supervisor.start_link(children, opts)
+  end
+
+  # Tell Phoenix to update the endpoint configuration
+  # whenever the application is updated.
+  @impl true
+  def config_change(changed, _new, removed) do
+    ReminderAppWeb.Endpoint.config_change(changed, removed)
+    :ok
   end
 end
