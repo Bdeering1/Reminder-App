@@ -7,5 +7,6 @@ defmodule ReminderAppWeb.Router do
 
   scope "/api", ReminderAppWeb do
     pipe_through :api
+    get "/", DefaultController, :index
   end
 end

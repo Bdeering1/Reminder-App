@@ -2,8 +2,8 @@ import Config
 
 # Configure your database
 config :reminder_app, ReminderApp.Repo,
-  username: "postgres",
-  password: "postgres",
+  username: "admin",
+  password: "p-auth",
   hostname: "localhost",
   database: "reminder_app_dev",
   stacktrace: true,
