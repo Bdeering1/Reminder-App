@@ -7,6 +7,8 @@ defmodule ReminderApp.Repo.Migrations.CreateTasks do
       add :name, :string
       add :description, :text
       add :interval, :integer
+      add :weekday, :integer
+      add :last_notified_at, :utc_datetime
 
       timestamps()
     end
