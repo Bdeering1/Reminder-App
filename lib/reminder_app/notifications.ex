@@ -8,26 +8,22 @@ defmodule ReminderApp.Notifications do
     # date_edt = Timex.Timezone.convert(date, "America/Toronto")
     tasks = Tasks.list_tasks()
     for task <- tasks do
-      if task_due?(task, date) do
+      if task.next_date <= date do
         if send_notification(task) == :ok do
           IO.puts "Sending notification for \"#{task.name}\""
-          Tasks.update_task(task, %{last_notified_at: date})
+          if Map.fetch(task, :interval) === {:ok, nil} do
+            Tasks.delete_task(task)
+          else
+            date = Timex.shift(task.next_date, days: task.interval)
+            Tasks.update_task(task, %{next_date: date})
+          end
         end
       end
     end
   end
 
-  def task_due?(task, date) do
-    if task.weekday != Date.day_of_week(date), do: false
-    case Map.fetch(task, :last_notified_at) do
-      {:ok, nil} -> true
-      {:ok, last_notified} ->
-        div(Timex.Comparable.diff(date, last_notified, :days), 7) >= task.interval
-      _ -> true
-    end
-  end
-
   def send_notification(_task) do
+    HTTPoison.start
     :ok
   end
 

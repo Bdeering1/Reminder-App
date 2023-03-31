@@ -41,7 +41,9 @@ defmodule ReminderApp.MixProject do
       {:gettext, "~> 0.20"},
       {:jason, "~> 1.2"},
       {:plug_cowboy, "~> 2.5"},
-      {:timex, "~> 3.0"}
+      {:timex, "~> 3.0"},
+      {:httpoison, "~> 2.1"},
+      {:poison, "~> 5.0"}
     ]
   end
 

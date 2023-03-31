@@ -20,9 +20,8 @@ defmodule ReminderAppWeb.TaskJSON do
       id: task.id,
       name: task.name,
       description: task.description,
+      next_date: task.next_date,
       interval: task.interval,
-      weekday: task.weekday,
-      last_notified_at: task.last_notified_at
     }
   end
 end
