@@ -10,5 +10,8 @@ defmodule ReminderAppWeb.Router do
     get "/", DefaultController, :index
     get "/try-notify", DefaultController, :try_notify
     get "/tasks", TaskController, :index
+    post "/task", TaskController, :create
+    get "/task/:id", TaskController, :show
+    patch "/task/:id", TaskController, :update
   end
 end

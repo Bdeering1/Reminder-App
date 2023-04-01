@@ -37,6 +37,10 @@ defmodule ReminderApp.Tasks do
   """
   def get_task!(id), do: Repo.get!(Task, id)
 
+  def get_task_by_name!(name) do
+    Repo.one!(from t in Task, where: t.name == ^name)
+  end
+
   @doc """
   Creates a task.
 
