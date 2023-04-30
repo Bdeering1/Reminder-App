@@ -8,10 +8,11 @@ defmodule ReminderAppWeb.Router do
   scope "/api", ReminderAppWeb do
     pipe_through :api
     get "/", DefaultController, :index
-    get "/try-notify", DefaultController, :try_notify
+    get "/try-notify", TaskController, :try_notify
     get "/tasks", TaskController, :index
-    post "/task", TaskController, :create
     get "/task/:id", TaskController, :show
+    post "/task", TaskController, :create
     patch "/task/:id", TaskController, :update
+    delete "/task/:id", TaskController, :delete
   end
 end

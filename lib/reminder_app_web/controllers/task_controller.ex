@@ -39,4 +39,9 @@ defmodule ReminderAppWeb.TaskController do
       send_resp(conn, :no_content, "")
     end
   end
+
+  def try_notify(conn, _params) do
+    tasks_notified = ReminderApp.Notifications.try_notify()
+    render(conn, :index, tasks: tasks_notified)
+  end
 end

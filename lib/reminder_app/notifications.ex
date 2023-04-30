@@ -6,9 +6,12 @@ defmodule ReminderApp.Notifications do
     IO.puts "Checking task list..."
     date = DateTime.utc_now
     tasks = Tasks.list_tasks()
-    for task <- tasks do
-      if Timex.compare(task.next_date, date) < 1, do: send_notification(task) |> handle_response(task)
+    tasks_notified = for task <- tasks do
+      if Timex.compare(task.next_date, date) < 1 do
+        with :ok <- (send_notification(task) |> handle_response(task)), do: task
+      end
     end
+    tasks_notified
   end
 
   def send_notification(task) do
@@ -35,9 +38,12 @@ defmodule ReminderApp.Notifications do
         date = Timex.shift(task.next_date, days: task.interval)
         Tasks.update_task(task, %{next_date: date})
       end
+      %{"response" => %{"message" => message}} = Poison.decode!(res.body)
+      IO.puts "\n\"#{task.name}\" - #{message}\n"
+      :ok
+    else
+      :error
     end
-    %{"response" => %{"message" => message}} = Poison.decode!(res.body)
-    IO.puts "\n\"#{task.name}\" - #{message}\n"
   end
 
 end
